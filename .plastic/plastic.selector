@@ -1,0 +1,4 @@
+repository "Čača@jure2006@cloud"
+  path "/"
+    br "/main"
+    co "/main"
