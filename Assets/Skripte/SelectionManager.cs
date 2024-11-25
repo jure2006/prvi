@@ -9,6 +9,8 @@ public class SelectionManager : MonoBehaviour
 {
     public static SelectionManager Instance { get; set; }
 
+    public GameObject selectedObject;
+
     public bool onTarget;
 
     public GameObject interaction_Info_UI;
@@ -69,6 +71,7 @@ public class SelectionManager : MonoBehaviour
             if (interactable != null && interactable.playerInRange)
             {
                 onTarget = true;
+                selectedObject = interactable.gameObject;
 
                 // Preveri, ali interaction_text obstaja, preden ga uporabljaš
                 if (interaction_text != null)

@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInRange: 0
-  ItemName: kamen
+  ItemName: Stone
 --- !u!65 &8857460143165647700
 BoxCollider:
   m_ObjectHideFlags: 0
