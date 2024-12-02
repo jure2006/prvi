@@ -28,13 +28,8 @@ void Update(){
             Debug.Log("Inventory is full");
         }
 
-
-
-
     }
 }
-
-
 
     private void OnTriggerEnter(Collider other)
     {
