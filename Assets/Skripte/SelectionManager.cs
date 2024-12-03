@@ -16,6 +16,12 @@ public class SelectionManager : MonoBehaviour
     public GameObject interaction_Info_UI;
     TMP_Text interaction_text;
 
+
+    public Image centerDotIcon;
+    public Image handIcon; 
+
+
+
     private void Start()
     {
         onTarget = false;
@@ -68,28 +74,52 @@ public class SelectionManager : MonoBehaviour
 
             InteractableObject interactable = selectionTransform.GetComponent<InteractableObject>();
 
-            if (interactable != null && interactable.playerInRange)
+            if (interactable  && interactable.playerInRange)
             {
                 onTarget = true;
                 selectedObject = interactable.gameObject;
 
-                // Preveri, ali interaction_text obstaja, preden ga uporabljaš
-                if (interaction_text != null)
-                {
+
                     interaction_text.text = interactable.GetItemName();
-                }
+
+                
 
                 interaction_Info_UI.SetActive(true);
+
+                if(interactable.CompareTag("Pickable")){
+                      
+                  centerDotIcon.gameObject.SetActive(false);
+                  handIcon.gameObject.SetActive(true);
+
+                }
+                else
+                {
+                       handIcon.gameObject.SetActive(false);
+                     centerDotIcon.gameObject.SetActive(true);
+                  
+
+
+
+                }
             }
             else
             {
                 onTarget = false;
                 interaction_Info_UI.SetActive(false);
+                handIcon.gameObject.SetActive(false);
+                     centerDotIcon.gameObject.SetActive(true);
+                  
+
             }
         }
         else
         {
+            onTarget= false;
             interaction_Info_UI.SetActive(false);
+            handIcon.gameObject.SetActive(false);
+                     centerDotIcon.gameObject.SetActive(true);
+                  
+
         }
     }
 }
