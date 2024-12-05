@@ -8,7 +8,10 @@ using UnityEngine.UI;
 
 public class InventorySystem : MonoBehaviour
 {
+    public GameObject ItemInfoUI;
     public static InventorySystem Instance { get; set; }
+    public GameObject ItemInfoUIi { get; internal set; }
+
     public GameObject inventoryScreenUI;
     public List<GameObject> slotList = new List<GameObject>();
     public List<string> itemList = new List<string>();
@@ -79,7 +82,7 @@ public class InventorySystem : MonoBehaviour
         itemToAdd.transform.SetParent(whatSlotToEquip.transform);
 
         itemList.Add(ItemName);
-      
+
 
        TriggerPickupPopUp(ItemName, itemToAdd.GetComponent<Image>().sprite);
 
@@ -87,11 +90,11 @@ public class InventorySystem : MonoBehaviour
        ReCalculateList();
        CraftingSystem.Instance.RefreshNeededItems();
 
-       
+
     }
 
       void TriggerPickupPopUp(string itemName, Sprite itemSprite)
-    
+
     {
 
       pickupAlert.SetActive(true);
@@ -102,7 +105,7 @@ public class InventorySystem : MonoBehaviour
     }
 
 
-  
+
 
 
 
@@ -133,6 +136,11 @@ public class InventorySystem : MonoBehaviour
         return new GameObject();
     }
 
+    internal void ReCalculeList()
+    {
+        throw new NotImplementedException();
+    }
+
     //tilen was here
     public void RemoveItem(string nameToRemove, int amountToRemove)
     {
@@ -145,7 +153,7 @@ public class InventorySystem : MonoBehaviour
                 if (slotList[i].transform.GetChild(0).name == nameToRemove +"(Clone)" && counter !=0)
                 {
 
-                    Destroy(slotList[i].transform.GetChild(0).gameObject);
+                    DestroyImmediate(slotList[i].transform.GetChild(0).gameObject);
                     counter -= 1;
 
                 }
@@ -158,7 +166,7 @@ public class InventorySystem : MonoBehaviour
        CraftingSystem.Instance.RefreshNeededItems();
     }
 
-    
+
 
 
 
@@ -183,3 +191,4 @@ public class InventorySystem : MonoBehaviour
 
 
 }
+

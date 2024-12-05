@@ -4,35 +4,29 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
-    public static PlayerState Instance {get; set;}
-    
-//healt
-public float currentHealth;
-public float maxHealth;
+    public static PlayerState Instance { get; set; }
 
+    // Health
+    public float currentHealth;
+    public float maxHealth;
 
+    // Calories
+    public float currentCalories;
+    public float maxCalories;
 
+    private float distanceTravelled = 0;
+    private Vector3 lastPosition;
 
-// calories
+    public GameObject playerBody;
 
-public float currentCalories;
-public float maxCalories;
+    // Hydration
+    public float currentHydrationPercent;
+    public float maxHydrationPercent;
+    public bool isHydrationActive;
 
-float distanceTravelled = 0;
-Vector3 lastPostiton;
-
-public GameObject playerBody;
-
-
-
-// hydration
-public float currentHydrationPercent;
-public float maxHydrationPercent;
-public bool isHydrationActive;
-
-
-   private void Awake(){
-         if (Instance != null && Instance != this)
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -42,47 +36,64 @@ public bool isHydrationActive;
         }
     }
 
+    private void Start()
+    {
+        // Initializing the player's health, calories, and hydration
+        currentHealth = maxHealth;
+        currentCalories = maxCalories;
+        currentHydrationPercent = maxHydrationPercent;
 
-private void Start(){
-
-
-    currentHealth = maxHealth;
-    currentCalories = maxCalories;
-    currentHydrationPercent = maxHydrationPercent;
-
-
-     StartCoroutine(decreaseHydration());
-
-
-}
-IEnumerator decreaseHydration(){
-    while(true){
-        currentHydrationPercent -=1;
-        yield return new WaitForSeconds(2);
+        // Start the hydration decrease coroutine
+        StartCoroutine(DecreaseHydration());
     }
-}
 
+    // Coroutine to decrease hydration over time
+    IEnumerator DecreaseHydration()
+    {
+        while (true)
+        {
+            if (isHydrationActive)
+            {
+                currentHydrationPercent -= 1;
+                currentHydrationPercent = Mathf.Clamp(currentHydrationPercent, 0, maxHydrationPercent); // Prevents negative hydration
+            }
+            yield return new WaitForSeconds(2);
+        }
+    }
 
-
-
-    // Update is called once per frame
     void Update()
     {
+        // Track distance travelled to decrease calories
+        distanceTravelled += Vector3.Distance(playerBody.transform.position, lastPosition);
+        lastPosition = playerBody.transform.position;
 
-       distanceTravelled += Vector3.Distance(playerBody.transform.position, lastPostiton);
-       lastPostiton = playerBody.transform.position;
+        if (distanceTravelled >= 5)
+        {
+            distanceTravelled = 0;
+            currentCalories -= 1;  // Decrease calories when player moves
+        }
 
-       if(distanceTravelled >=5){
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            currentHealth -= 10;  // Decrease health for testing purposes
+        }
+    }
 
-        distanceTravelled =0;
-        currentCalories -= 1;
+    // Setter for Health
+    public void SetHealth(float health)
+    {
+        currentHealth = Mathf.Clamp(health, 0, maxHealth); // Clamps the value between 0 and maxHealth
+    }
 
-       }
+    // Setter for Calories
+    public void SetCalories(float calories)
+    {
+        currentCalories = Mathf.Clamp(calories, 0, maxCalories); // Clamps the value between 0 and maxCalories
+    }
 
-
-     if (Input.GetKeyDown(KeyCode.N))
-     {
-        currentHealth -= 10;
-        }   
+    // Setter for Hydration
+    public void SetHydration(float hydration)
+    {
+        currentHydrationPercent = Mathf.Clamp(hydration, 0, maxHydrationPercent); // Clamps the value between 0 and maxHydrationPercent
     }
 }
