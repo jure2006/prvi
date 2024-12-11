@@ -76,30 +76,30 @@ public class CraftingSystem : MonoBehaviour
     void CraftAnyItem(Blueprint blueprintToCrafting)
     { //tilen was here 39:33
         InventorySystem.Instance.AddTooInventory(blueprintToCrafting.itemName);
-        
+
         if(blueprintToCrafting.numOfRequirements==1)
         {
-           InventorySystem.Instance.RemoveItem(blueprintToCrafting.Req1, blueprintToCrafting.Req1amount); 
+           InventorySystem.Instance.RemoveItem(blueprintToCrafting.Req1, blueprintToCrafting.Req1amount);
         }
         else if(blueprintToCrafting.numOfRequirements==2){
 
-             
+
         InventorySystem.Instance.RemoveItem(blueprintToCrafting.Req1, blueprintToCrafting.Req1amount);
-        InventorySystem.Instance.RemoveItem(blueprintToCrafting.Req2, blueprintToCrafting.Req2amount); 
+        InventorySystem.Instance.RemoveItem(blueprintToCrafting.Req2, blueprintToCrafting.Req2amount);
         }
 
-        
+
 
         InventorySystem.Instance.ReCalculateList();
-         
 
-         
+
+
          StartCoroutine(calculate());
         //RefreshNeededItems();
-         
 
-         
-        //do sem tilen was here 
+
+
+        //do sem tilen was here
 
 
         //add item into inventory
@@ -116,7 +116,7 @@ public class CraftingSystem : MonoBehaviour
                 yield return 0;
                 InventorySystem.Instance.ReCalculateList();
                 RefreshNeededItems();
-            }      
+            }
 
 
 
@@ -132,7 +132,9 @@ public class CraftingSystem : MonoBehaviour
             craftingScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             isOpen = true;
-
+            Cursor.visible = true;
+            SelectionManager.Instance.DisableSelection();
+            SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
         }
         else if (Input.GetKeyDown(KeyCode.C) && isOpen)
         {
@@ -141,6 +143,11 @@ public class CraftingSystem : MonoBehaviour
             if (!InventorySystem.Instance.isOpen)
             {
                 Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+
+                SelectionManager.Instance.EnableSelection();
+                SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
             }
             isOpen = false;
         }
@@ -189,4 +196,4 @@ public class CraftingSystem : MonoBehaviour
     }
 
 
-}  
+}

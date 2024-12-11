@@ -114,6 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718e7cdd09c1594458ae4c460bc4c13b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEquippable: 1
+  isNowEquipped: 0
+  isSelected: 0
   isTrashable: 0
   thisName: Sekirca v med
   thisDescription: Se kira se sekira

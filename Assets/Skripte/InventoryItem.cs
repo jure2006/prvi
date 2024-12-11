@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
+    // --- Is this item equippable and currently equipped --- //
+    public bool isEquippable = false; // Defines if the item can be equipped
+    public bool isNowEquipped = false; // Tracks if the item is currently equipped
+    public bool isSelected;
+
     // --- Is this item trashable --- //
     public bool isTrashable;
 
@@ -31,6 +36,18 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemInfoUI_itemName = itemInfoUI.transform.Find("ItemName").GetComponent<Text>();
         itemInfoUI_itemDescription = itemInfoUI.transform.Find("ItemDescription").GetComponent<Text>();
         itemInfoUI_itemFunctionality = itemInfoUI.transform.Find("ItemFuncionality").GetComponent<Text>();
+    }
+
+    void Update()
+    {
+        if (isSelected)
+        {
+            gameObject.GetComponent<DragDrop>().enabled = false;
+        }
+        else
+        {
+            gameObject.GetComponent<DragDrop>().enabled = true;
+        }
     }
 
     // Triggered when the mouse enters into the area of the item that has this script.
@@ -60,6 +77,13 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 itemPendingConsumption = gameObject;
                 consumingFunction(healthEffect, caloriesEffect, hydrationEffect);
             }
+
+            // Equip logic
+            if (isEquippable && !isNowEquipped && !EquipSystem.Instance.CheckIfFull())
+            {
+                EquipSystem.Instance.AddToQuickSlots(gameObject);
+                isNowEquipped = true;
+            }
         }
     }
 
@@ -82,9 +106,7 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         itemInfoUI.SetActive(false);
 
         healthEffectCalculation(healthEffect);
-
         caloriesEffectCalculation(caloriesEffect);
-
         hydrationEffectCalculation(hydrationEffect);
     }
 
@@ -98,11 +120,11 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if ((healthBeforeConsumption + healthEffect) > maxHealth)
             {
-                PlayerState.Instance.SetHealth(maxHealth); // Popravljeno na SetHealth
+                PlayerState.Instance.SetHealth(maxHealth);
             }
             else
             {
-                PlayerState.Instance.SetHealth(healthBeforeConsumption + healthEffect); // Popravljeno na SetHealth
+                PlayerState.Instance.SetHealth(healthBeforeConsumption + healthEffect);
             }
         }
     }
@@ -117,11 +139,11 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if ((caloriesBeforeConsumption + caloriesEffect) > maxCalories)
             {
-                PlayerState.Instance.SetCalories(maxCalories); // Popravljeno na SetCalories
+                PlayerState.Instance.SetCalories(maxCalories);
             }
             else
             {
-                PlayerState.Instance.SetCalories(caloriesBeforeConsumption + caloriesEffect); // Popravljeno na SetCalories
+                PlayerState.Instance.SetCalories(caloriesBeforeConsumption + caloriesEffect);
             }
         }
     }
@@ -136,11 +158,11 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             if ((hydrationBeforeConsumption + hydrationEffect) > maxHydration)
             {
-                PlayerState.Instance.SetHydration(maxHydration); // Popravljeno na SetHydration
+                PlayerState.Instance.SetHydration(maxHydration);
             }
             else
             {
-                PlayerState.Instance.SetHydration(hydrationBeforeConsumption + hydrationEffect); // Popravljeno na SetHydration
+                PlayerState.Instance.SetHydration(hydrationBeforeConsumption + hydrationEffect);
             }
         }
     }

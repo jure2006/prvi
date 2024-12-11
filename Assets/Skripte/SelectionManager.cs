@@ -18,7 +18,7 @@ public class SelectionManager : MonoBehaviour
 
 
     public Image centerDotIcon;
-    public Image handIcon; 
+    public Image handIcon;
 
 
 
@@ -82,12 +82,12 @@ public class SelectionManager : MonoBehaviour
 
                     interaction_text.text = interactable.GetItemName();
 
-                
+
 
                 interaction_Info_UI.SetActive(true);
 
                 if(interactable.CompareTag("Pickable")){
-                      
+
                   centerDotIcon.gameObject.SetActive(false);
                   handIcon.gameObject.SetActive(true);
 
@@ -96,7 +96,7 @@ public class SelectionManager : MonoBehaviour
                 {
                        handIcon.gameObject.SetActive(false);
                      centerDotIcon.gameObject.SetActive(true);
-                  
+
 
 
 
@@ -108,7 +108,7 @@ public class SelectionManager : MonoBehaviour
                 interaction_Info_UI.SetActive(false);
                 handIcon.gameObject.SetActive(false);
                      centerDotIcon.gameObject.SetActive(true);
-                  
+
 
             }
         }
@@ -118,8 +118,28 @@ public class SelectionManager : MonoBehaviour
             interaction_Info_UI.SetActive(false);
             handIcon.gameObject.SetActive(false);
                      centerDotIcon.gameObject.SetActive(true);
-                  
+
 
         }
     }
+
+    public void DisableSelection()
+    {
+        handIcon.enabled = false;
+        centerDotIcon.enabled = false;
+        interaction_Info_UI.SetActive(false);
+
+        selectedObject = null;
+    }
+    public void EnableSelection()
+    {
+        handIcon.enabled = true;
+        centerDotIcon.enabled = true;
+        interaction_Info_UI.SetActive(true);
+
+    }
+
+
+
+
 }
